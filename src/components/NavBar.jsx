@@ -7,11 +7,12 @@ import { logout } from "../store/slices/auth";
 function NavBar() {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
+  const userData = useSelector((state) => state.auth.data);
 
   const onClickLogout = () => {
     if (window.confirm("Ви хочете вийти з облікового запису?"))
       dispatch(logout());
-      window.localStorage.removeItem('token');
+    window.localStorage.removeItem("token");
   };
   return (
     <Navbar bg="light" variant="light">
@@ -29,9 +30,15 @@ function NavBar() {
           <NavLink to="#" className="nav-link">
             Про нас
           </NavLink>
-          <NavLink to="/admin" className="nav-link">
-            Admin
-          </NavLink>
+          {userData?.admin ? (
+            <>
+              <NavLink to="/admin" className="nav-link">
+                Admin
+              </NavLink>
+            </>
+          ) : (
+            <></>
+          )}
         </Nav>
       </Container>
       {isAuth ? (

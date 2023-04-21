@@ -26,6 +26,7 @@ const PostCategoriesBar = () => {
           variant="secondary"
           key={0}
           style={{ cursor: "pointer" }}
+          
         >
           All
         </ListGroup.Item>

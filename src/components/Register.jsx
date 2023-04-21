@@ -40,10 +40,10 @@ function Register({ show, onHide }) {
         });
       });
       return;
-    } else if(data.payload?.message){
-        alert(data.payload.message);
-        return;
-    }else if (data.payload?.token) {
+    } else if (data.payload?.message) {
+      alert(data.payload.message);
+      return;
+    } else if (data.payload?.token) {
       window.localStorage.setItem("token", data.payload.token);
       return <Navigate to="/" />;
     }

@@ -12,16 +12,6 @@ const PostItem = ({ post }) => {
           border={"light"}
           className="shadow-sm mb-5 bg-body rounded"
         >
-          <div className="editButtons">
-            <Link>
-              <Button variant="primary" size="sm" className="me-2">
-                <PencilFill />
-              </Button>
-            </Link>
-            <Button variant="danger" size="sm">
-              <TrashFill />
-            </Button>
-          </div>
           <div className="card-img-user-post-wrapper">
             <Card.Img
               className="card-img-user-post-back"
@@ -55,6 +45,7 @@ const PostItem = ({ post }) => {
                 </small>
               </>
             )}
+            {post.post_category.name}
           </Card.Footer>
         </Card>
       </div>

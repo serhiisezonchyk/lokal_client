@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchCheck, fetchLogin, fetchRegister } from "../../http/userApi";
+import { fetchLoginAdmin, fetchRegisterAdmin } from "../../http/adminApi";
 
 const initialState = {
   data: null,
@@ -53,6 +54,36 @@ const authSlice = createSlice({
       }
     },
     [fetchRegister.rejected]: (state) => {
+      state.data = null;
+      state.status = "error";
+    },
+
+    [fetchLoginAdmin.pending]: (state) => {
+      state.data = null;
+      state.status = "loading";
+    },
+    [fetchLoginAdmin.fulfilled]: (state, action) => {
+      state.data = action.payload;
+      state.status = "loaded";
+    },
+    [fetchLoginAdmin.rejected]: (state) => {
+      state.data = null;
+      state.status = "error";
+    },
+    [fetchRegisterAdmin.pending]: (state) => {
+      state.data = null;
+      state.status = "loading";
+    },
+    [fetchRegisterAdmin.fulfilled]: (state, action) => {
+      if (action.payload?.errors || action.payload?.message) {
+        state.data = null;
+        state.status = "error";
+      } else {
+        state.data = action.payload;
+        state.status = "loaded";
+      }
+    },
+    [fetchRegisterAdmin.rejected]: (state) => {
       state.data = null;
       state.status = "error";
     },

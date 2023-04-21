@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -12,41 +12,64 @@ import Register from "../components/Register";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin, selectIsAuth } from "../http/userApi";
-import {Navigate, useNavigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { fetchLoginAdmin } from "../http/adminApi";
 
 const Auth = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [show, setShow] = useState(false);
+
   const isAuth = useSelector(selectIsAuth);
 
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
 
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isValid },
+    reset,
   } = useForm({
     defaultValues: {
+      login: "",
       phone: "",
       password: "",
     },
     mode: "onChange",
   });
 
+
+  const handleCheckboxChange = (event) => {
+    setIsAdmin(event.target.checked);
+    reset({
+      login: "",
+      phone: "",
+      password: "",
+    });
+  };
+
   const onSubmit = async (values) => {
-    const data = await dispatch(fetchLogin(values));
-    
-    if (!data.payload){
-        return alert('Помилка авторизації.');
+    let data = null;
+    if (!isAdmin)
+      data = await dispatch(
+        fetchLogin({ phone: values.phone, password: values.password })
+      );
+    else
+      data = await dispatch(
+        fetchLoginAdmin({ login: values.login, password: values.password })
+      );
+
+    if (!data.payload) {
+      return alert("Помилка авторизації.");
     }
 
-    if('token' in data.payload){
-      window.localStorage.setItem('token', data.payload.token);
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
     }
   };
 
-  if(isAuth){
-    return <Navigate to="/"/>
+  if (isAuth) {
+    return <Navigate to="/" />;
   }
   return (
     <div style={{ height: "100%", display: "flex", alignItems: "center" }}>
@@ -66,30 +89,62 @@ const Auth = () => {
                     className="d-flex flex-column"
                     onSubmit={handleSubmit(onSubmit)}
                   >
-                    <FloatingLabel
-                      controlId="phone"
-                      label="Номер телефону"
-                      className="mb-3"
-                    >
-                      <Form.Control
-                        type="text"
-                        placeholder="Номер телефону"
-                        className={Boolean(errors.phone?.message) ? "is-invalid" : ""}
-                        {...register("phone", { required: "Введіть номер телефону" })}
-                      />
-                        <span className="text-danger">{errors.phone?.message}</span>
-
-                    </FloatingLabel>
+                    {!isAdmin ? (
+                      <FloatingLabel
+                        controlId="phone"
+                        label="Номер телефону"
+                        className="mb-3"
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder="Номер телефону"
+                          className={
+                            Boolean(errors.phone?.message) ? "is-invalid" : ""
+                          }
+                          {...register("phone", {
+                            required: "Введіть номер телефону",
+                          })}
+                        />
+                        <span className="text-danger">
+                          {errors.phone?.message}
+                        </span>
+                      </FloatingLabel>
+                    ) : (
+                      <FloatingLabel
+                        controlId="login"
+                        label="Логін"
+                        className="mb-3"
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder="Логін"
+                          className={
+                            Boolean(errors.login?.message) ? "is-invalid" : ""
+                          }
+                          {...register("login", {
+                            required: "Введіть логін користувача.",
+                          })}
+                        />
+                        <span className="text-danger">
+                          {errors.login?.message}
+                        </span>
+                      </FloatingLabel>
+                    )}
 
                     <FloatingLabel controlId="password" label="Пароль">
                       <Form.Control
                         type="password"
                         placeholder="Пароль"
-                        className={Boolean(errors.password?.message) ? "is-invalid" : ""}
-
-                        {...register("password", { required: "Введіть пароль" })}
+                        className={
+                          Boolean(errors.password?.message) ? "is-invalid" : ""
+                        }
+                        {...register("password", {
+                          required: "Введіть пароль",
+                        })}
                       />
-                        <span className="text-danger">{errors.password?.message}</span>
+                      <span className="text-danger">
+                        {errors.password?.message}
+                      </span>
                     </FloatingLabel>
 
                     <Button
@@ -103,13 +158,27 @@ const Auth = () => {
                     <hr className="mb-0" />
                   </Form>
                 </Card.Body>
-                <Card.Body className="pt-0">
-                  <Card.Link
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setShow(true)}
-                  >
-                    Зареєструватися
-                  </Card.Link>
+                <Card.Body className="pt-0 d-flex justify-content-between">
+                  {!isAdmin ? (
+                    <>
+                      <Card.Link
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setShow(true)}
+                      >
+                        Зареєструватися
+                      </Card.Link>
+                    </>
+                  ) : (
+                    <>ㅤ</>
+                  )}
+
+                  <Form.Check
+                    type="switch"
+                    checked={isAdmin}
+                    onChange={handleCheckboxChange}
+                    id="custom-switch"
+                    label="Адмін?"
+                  />
                 </Card.Body>
               </Card>
             </Container>
@@ -120,6 +189,5 @@ const Auth = () => {
     </div>
   );
 };
-
 
 export default Auth;
