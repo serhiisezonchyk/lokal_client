@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { selectIsAuth } from "../http/userApi";
 import { logout } from "../store/slices/auth";
+import { selectIsAdmin } from "../http/adminApi";
 function NavBar() {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
-  const userData = useSelector((state) => state.auth.data);
+  const isAdmin = useSelector(selectIsAdmin);
 
   const onClickLogout = () => {
     if (window.confirm("Ви хочете вийти з облікового запису?"))
@@ -30,7 +31,7 @@ function NavBar() {
           <NavLink to="#" className="nav-link">
             Про нас
           </NavLink>
-          {userData?.admin ? (
+          {isAdmin? (
             <>
               <NavLink to="/admin" className="nav-link">
                 Admin

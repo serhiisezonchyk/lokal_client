@@ -18,7 +18,7 @@ export const fetchCheck = createAsyncThunk("auth/fetchCheck", async () => {
   console.log(decoded);
   if ("partnerId" in decoded)
     return {
-      admin: [{ id: decoded.id }, { partnerId: decoded.partnerId }],
+      admin: { id: decoded.id, partnerId: decoded.partnerId },
       token: data.token,
     };
   else {

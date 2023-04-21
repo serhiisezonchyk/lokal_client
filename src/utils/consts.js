@@ -8,3 +8,4 @@ export const FULLPARTNER_ROUTE = "/partner";
 export const PARTNERS_ROUTE = "/partners";
 export const FULLPOST_ROUTE = "/post";
 export const POSTS_ROUTE = "/posts";
+export const WALLET_ROUTE = "/wallet";

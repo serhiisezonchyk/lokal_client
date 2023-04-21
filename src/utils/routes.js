@@ -19,20 +19,24 @@ import {
   PARTNERS_ROUTE,
   FULLPOST_ROUTE,
   POSTS_ROUTE,
+  WALLET_ROUTE
 } from "./consts";
+import WalletPage from "../pages/WalletPage";
 
+export const adminRoutes = [
+  {
+    path: ADMIN_ROUTE,
+    Component: AdminPage,
+  }
+]
 export const authRoutes = [
-  // {
-  //   path: ADMIN_ROUTE,
-  //   Component: AdminPage,
-  // },
+  {
+    path: WALLET_ROUTE,
+    Component: WalletPage,
+  },
 ];
 
 export const publicRoutes = [
-    {
-    path: ADMIN_ROUTE,
-    Component: AdminPage,
-  },
   
   {
     path: MAIN_ROUTE,

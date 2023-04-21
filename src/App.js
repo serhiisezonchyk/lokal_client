@@ -7,9 +7,6 @@ import { fetchCheck, selectIsAuth } from "./http/userApi";
 
 function App() {
   const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-  const userData = useSelector((state) => state.auth.data);
-  console.log(userData);
   useEffect(() => {
     dispatch(fetchCheck());
   }, []);
