@@ -15,20 +15,20 @@ const postCategoriesSlice = createSlice({
     reducer: {
 
     },
-    extraReducers: {
-        [fetchPostCategories.pending]: (state) =>{
+    extraReducers: (builder)=>{
+        builder.addCase(fetchPostCategories.pending,(state)=>{
             state.postCategories.items = [];
             state.postCategories.status = 'loading'
-        },
-        [fetchPostCategories.fulfilled]: (state, action) =>{
+        })
+        .addCase(fetchPostCategories.fulfilled,(state, action)=>{
             state.postCategories.items = action.payload;
             state.postCategories.status = 'loaded'
-        },
-        [fetchPostCategories.rejected]: (state) =>{
+        })
+        .addCase(fetchPostCategories.rejected, (state)=>{
             state.postCategories.items = [];
             state.postCategories.status = 'error'
-        },
-    }
+        });
+    },
 })
 
 export const postCategoriesReducer = postCategoriesSlice.reducer;

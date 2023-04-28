@@ -7,6 +7,21 @@ const initialState = {
   status: "loading",
 };
 
+const handleAsyncRequest = (state) => {
+  state.data = null;
+  state.status = "loading";
+};
+
+const handleAsyncSuccess = (state, action) => {
+  state.data = action.payload;
+  state.status = "loaded";
+};
+
+const handleAsyncError = (state) => {
+  state.data = null;
+  state.status = "error";
+};
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -15,78 +30,35 @@ const authSlice = createSlice({
       state.data = null;
     },
   },
-  extraReducers: {
-    [fetchLogin.pending]: (state) => {
-      state.data = null;
-      state.status = "loading";
-    },
-    [fetchLogin.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.status = "loaded";
-    },
-    [fetchLogin.rejected]: (state) => {
-      state.data = null;
-      state.status = "error";
-    },
-    [fetchCheck.pending]: (state) => {
-      state.data = null;
-      state.status = "loading";
-    },
-    [fetchCheck.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.status = "loaded";
-    },
-    [fetchCheck.rejected]: (state) => {
-      state.data = null;
-      state.status = "error";
-    },
-    [fetchRegister.pending]: (state) => {
-      state.data = null;
-      state.status = "loading";
-    },
-    [fetchRegister.fulfilled]: (state, action) => {
-      if (action.payload?.errors || action.payload?.message) {
-        state.data = null;
-        state.status = "error";
-      } else {
-        state.data = action.payload;
-        state.status = "loaded";
-      }
-    },
-    [fetchRegister.rejected]: (state) => {
-      state.data = null;
-      state.status = "error";
-    },
-
-    [fetchLoginAdmin.pending]: (state) => {
-      state.data = null;
-      state.status = "loading";
-    },
-    [fetchLoginAdmin.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.status = "loaded";
-    },
-    [fetchLoginAdmin.rejected]: (state) => {
-      state.data = null;
-      state.status = "error";
-    },
-    [fetchRegisterAdmin.pending]: (state) => {
-      state.data = null;
-      state.status = "loading";
-    },
-    [fetchRegisterAdmin.fulfilled]: (state, action) => {
-      if (action.payload?.errors || action.payload?.message) {
-        state.data = null;
-        state.status = "error";
-      } else {
-        state.data = action.payload;
-        state.status = "loaded";
-      }
-    },
-    [fetchRegisterAdmin.rejected]: (state) => {
-      state.data = null;
-      state.status = "error";
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchLogin.pending, handleAsyncRequest)
+      .addCase(fetchLogin.fulfilled, handleAsyncSuccess)
+      .addCase(fetchLogin.rejected, handleAsyncError)
+      .addCase(fetchCheck.pending, handleAsyncRequest)
+      .addCase(fetchCheck.fulfilled, handleAsyncSuccess)
+      .addCase(fetchCheck.rejected, handleAsyncError)
+      .addCase(fetchRegister.pending, handleAsyncRequest)
+      .addCase(fetchRegister.fulfilled, (state, action) => {
+        if (action.payload?.errors || action.payload?.message) {
+          handleAsyncError(state);
+        } else {
+          handleAsyncSuccess(state, action);
+        }
+      })
+      .addCase(fetchRegister.rejected, handleAsyncError)
+      .addCase(fetchLoginAdmin.pending, handleAsyncRequest)
+      .addCase(fetchLoginAdmin.fulfilled, handleAsyncSuccess)
+      .addCase(fetchLoginAdmin.rejected, handleAsyncError)
+      .addCase(fetchRegisterAdmin.pending, handleAsyncRequest)
+      .addCase(fetchRegisterAdmin.fulfilled, (state, action) => {
+        if (action.payload?.errors || action.payload?.message) {
+          handleAsyncError(state);
+        } else {
+          handleAsyncSuccess(state, action);
+        }
+      })
+      .addCase(fetchRegisterAdmin.rejected, handleAsyncError);
   },
 });
 

@@ -7,6 +7,7 @@ import Partners from "../pages/Partners";
 import Posts from "../pages/Posts";
 import Products from "../pages/Products";
 import Main from "../pages/Main";
+import WalletPage from "../pages/WalletPage";
 
 import {
   ADMIN_ROUTE,
@@ -19,15 +20,15 @@ import {
   PARTNERS_ROUTE,
   FULLPOST_ROUTE,
   POSTS_ROUTE,
-  WALLET_ROUTE
+  WALLET_ROUTE,
 } from "./consts";
-import WalletPage from "../pages/WalletPage";
 
 export const adminRoutes = [
   {
     path: ADMIN_ROUTE,
     Component: AdminPage,
-  }
+  },
+
 ]
 export const authRoutes = [
   {

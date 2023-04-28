@@ -15,23 +15,58 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 1;
+  background-color: #07cb00;
+  border: none;
 }
 
+.add-btn:hover {
+  background-color: #06b400;
+}
+
+.add-btn:active {
+  background-color: #069d01 !important; /* change the background color on click */
+}
 .add-btn .btn {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   font-size: 2rem;
   color: white;
-  background-color: #007bff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border: none;
   cursor: pointer;
 }
 
-.add-btn .btn:hover {
-  background-color: #0062cc;
+.back-btn {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1;
+  background-color: #bababa;
+  border: none;
 }
+
+.back-btn:hover {
+  background-color: #a1a1a1;
+}
+
+.back-btn:active {
+  background-color: #878787 !important; /* change the background color on click */
+}
+.back-btn .btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border: none;
+  cursor: pointer;
+}
+
 
 /* Edit/delete buttons admin */
 .editButtons {

@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import PostCategoryItem from "../PostCategory/PostCategoryItem";
-import { FaPlus } from "react-icons/fa";
+import { FaArrowLeft, FaPlus } from "react-icons/fa";
+import PostCategoryEditor from "./PostCategoryEditor";
 
 const PostCategoryList = () => {
+  const [showPostCategoryEditor, setShowPostCategoryEditor] = useState(false);
+  const handleAddClick = () => {
+    setShowPostCategoryEditor(!showPostCategoryEditor);
+  };
   const categories = [
     {
       id: 1,
@@ -23,26 +28,46 @@ const PostCategoryList = () => {
   ];
   return (
     <>
-      <Form.Group className="my-3">
-        <Form.Control type="text" placeholder="Пошук..." />
-      </Form.Group>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Значок</th>
-            <th>Категорія</th>
-            <th>Дія</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category) => (
-            <PostCategoryItem key={category.id} category={category} />
-          ))}
-        </tbody>
-      </Table>
-      <Button className="add-btn rounded-circle d-flex align-items-center justify-content-center">
-        <FaPlus />
-      </Button>
+      {!showPostCategoryEditor && (
+        <>
+          <Form.Group className="my-3">
+            <Form.Control type="text" placeholder="Пошук..." />
+          </Form.Group>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Значок</th>
+                <th>Категорія</th>
+                <th>Дія</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map((category) => (
+                <PostCategoryItem key={category.id} category={category} />
+              ))}
+            </tbody>
+          </Table>
+        </>
+      )}
+
+      {!showPostCategoryEditor ? (
+        <Button
+          className="add-btn rounded-circle d-flex align-items-center justify-content-center"
+          onClick={handleAddClick}
+        >
+          <FaPlus />
+        </Button>
+      ) : (
+        <>
+          <Button
+            className="back-btn rounded-circle d-flex align-items-center justify-content-center"
+            onClick={handleAddClick}
+          >
+            <FaArrowLeft />
+          </Button>
+        </>
+      )}
+      {showPostCategoryEditor && <PostCategoryEditor />}
     </>
   );
 };

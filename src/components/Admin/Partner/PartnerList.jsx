@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import PartnerItem from "../Partner/PartnerItem";
-import { FaPlus } from "react-icons/fa";
+import { FaArrowLeft, FaPlus } from "react-icons/fa";
+import PartnerEditor from "./PartnerEditor";
 
 const PartnerList = () => {
+  const [showPartnerEditor, setShowPartnerEditor] = useState(false);
+  const handleAddClick = () => {
+    setShowPartnerEditor(!showPartnerEditor);
+  };
   const partners = [
     {
       id: 1,
@@ -36,19 +41,28 @@ const PartnerList = () => {
   ];
   return (
     <>
-      <Form.Group className="my-3">
-        <Form.Control type="text" placeholder="Пошук..." />
-      </Form.Group>
-      <div className="partners-container">
-        <Form className="d-flex flex-column">
-          {partners.map((partner) => (
-            <PartnerItem key={partner.id} partner={partner} />
-          ))}
-        </Form>
-      </div>
-      <Button className="add-btn rounded-circle d-flex align-items-center justify-content-center">
+      {!showPartnerEditor && (
+        <>
+          <Form.Group className="my-3">
+            <Form.Control type="text" placeholder="Пошук..." />
+          </Form.Group>
+          <div className="partners-container">
+            <Form className="d-flex flex-column">
+              {partners.map((partner) => (
+                <PartnerItem key={partner.id} partner={partner} />
+              ))}
+            </Form>
+          </div>
+        </>
+      )}
+      {!showPartnerEditor ? (<>
+        <Button className="add-btn rounded-circle d-flex align-items-center justify-content-center" onClick={handleAddClick}>
         <FaPlus />
-      </Button>
+      </Button></>):(<>
+        <Button className="back-btn rounded-circle d-flex align-items-center justify-content-center" onClick={handleAddClick}>
+        <FaArrowLeft />
+      </Button></>)}
+        {showPartnerEditor && <PartnerEditor/>}
     </>
   );
 };
